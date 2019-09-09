@@ -24,18 +24,21 @@ Install kops on ubuntu instance:
  curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
  chmod +x kops-linux-amd64
  sudo mv kops-linux-amd64 /usr/local/bin/kops
+ 
+ 
 Create a Route53 private hosted zone (you can create Public hosted zone if you have a domain)
 
 create an S3 bucket
 
  aws s3 mb s3://clusters.k8s.alohapro.tk
-Expose environment variable:
 
+Expose environment variable:
  export KOPS_STATE_STORE=s3://clusters.k8s.alohapro.tk
 
 Create sshkeys before creating cluster
 
  ssh-keygen
+
 Create kubernetes cluster definitions on S3 bucket
 
  kops create cluster --cloud=aws --zones=us-east-1d --name=useast1.k8s.alohapro.tk --dns-zone=alohapro.tk --dns public
