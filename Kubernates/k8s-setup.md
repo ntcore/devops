@@ -11,7 +11,8 @@
     #sudo apt-get install unzip - if you dont have unzip in your system
     ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
     ```
-    
+    4update:  pip install awscli --upgrade --user
+	
 1. Install kubectl
    ```sh
    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -88,13 +89,13 @@ export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
 	diffrent ways:
    ```sh 
 	kops create cluster 
---master-count 1
---bastion
---cloud=aws 
---zones=us-east-1d 
---name=useast1.k8s.alohapro.tk 
---dns-zone=alohapro.tk 
---dns public
+    --master-count 1
+    --bastion
+    --cloud=aws 
+    --zones=us-east-1d 
+    --name=useast1.k8s.alohapro.tk 
+    --dns-zone=alohapro.tk 
+    --dns public
 
   # Create a cluster in AWS
   kops create cluster --name=kubernetes-cluster.example.com \
@@ -138,8 +139,44 @@ export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
   --state=s3://kops-state-1234 --zones=eu-west-1a \
   --node-count=2 --dry-run -oyaml
 
+MICRO
 
-    ```
+ kops create cluster \
+       --state "s3://state.chat.poeticoding.com" \
+       --zones "us-east-1d,us-east-1f"  \
+       --master-count 3 \
+       --master-size=t2.micro \
+       --node-count 2 \
+       --node-size=t2.micro \
+       --name chat.poeticoding.com \
+       --yes \
+	   --cloud=aws
+
+
+export KOPS_STATE_STORE="s3://clusters.k8s.alohapro.tk"
+export KOPS_CLUSTER_NAME=dev.k8s.alohapro.tk
+
+ kops create cluster \
+	   --state "s3://clusters.k8s.alohapro.tk"  \
+	   --zones "eu-central-1a"  \
+       --master-count 1 \
+       --master-size=t2.micro \
+       --node-count 2 \
+       --node-size=t2.micro \
+       --name=$KOPS_CLUSTER_NAME  \
+	   --cloud=aws \
+	   --dns-zone=alohapro.tk  \
+	   --dns public
+       
+
+
+
+```
+else
+
+https://www.poeticoding.com/create-a-high-availability-kubernetes-cluster-on-aws-with-kops/
+
+    
 1. Create kubernetes cluser
     ```sh 
       kops update cluster useast1.k8s.alohapro.tk  --yes
@@ -155,6 +192,9 @@ export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
    ```
 
 #### Deploying Nginx container on Kubernetes 
+
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
 1. Deploying Nginx Container
     ```sh 
       kubectl run sample-nginx --image=nginx --replicas=2 --port=80
@@ -175,6 +215,7 @@ export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
 ### Another Helpful command
 ```sh
  kubectl cluster-info
+ kubectl config current-context
 ```
 
 
