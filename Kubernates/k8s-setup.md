@@ -21,40 +21,40 @@
    ```
 1. Create an IAM user/role  with Route53, EC2, IAM and S3 full access
 ```sh
-Setup IAM user
-In order to build clusters within AWS we'll create a dedicated IAM user for kops. This user requires API credentials in order to use kops. Create the user, and credentials, using the AWS console.
+	Setup IAM user
+	In order to build clusters within AWS we'll create a dedicated IAM user for kops. This user requires API credentials in order to use kops. Create the user, and credentials, using the AWS console.
 
-The kops user will require the following IAM permissions to function properly:
+	The kops user will require the following IAM permissions to function properly:
 
-AmazonEC2FullAccess
-AmazonRoute53FullAccess
-AmazonS3FullAccess
-IAMFullAccess
-AmazonVPCFullAccess
-You can create the kops IAM user from the command line using the following:
+	AmazonEC2FullAccess
+	AmazonRoute53FullAccess
+	AmazonS3FullAccess
+	IAMFullAccess
+	AmazonVPCFullAccess
+	You can create the kops IAM user from the command line using the following:
 
-aws iam create-group --group-name kops
+	aws iam create-group --group-name kops
 
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/IAMFullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonVPCFullAccess --group-name kops
+	aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --group-name kops
+	aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess --group-name kops
+	aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --group-name kops
+	aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/IAMFullAccess --group-name kops
+	aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonVPCFullAccess --group-name kops
 
-aws iam create-user --user-name kops
+	aws iam create-user --user-name kops
 
-aws iam add-user-to-group --user-name kops --group-name kops
+	aws iam add-user-to-group --user-name kops --group-name kops
 
-aws iam create-access-key --user-name kops
-You should record the SecretAccessKey and AccessKeyID in the returned JSON output, and then use them below:
+	aws iam create-access-key --user-name kops
+	You should record the SecretAccessKey and AccessKeyID in the returned JSON output, and then use them below:
 
-# configure the aws client to use your new IAM user
-aws configure           # Use your new access and secret key here
-aws iam list-users      # you should see a list of all your IAM users here
+	# configure the aws client to use your new IAM user
+	aws configure           # Use your new access and secret key here
+	aws iam list-users      # you should see a list of all your IAM users here
 
-# Because "aws configure" doesn't export these vars for kops to use, we export them now
-export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
-export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
+	# Because "aws configure" doesn't export these vars for kops to use, we export them now
+	export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+	export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
 ```
 
 1. Attach IAM role to ubuntu server
