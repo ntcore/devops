@@ -200,6 +200,11 @@ https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
       kubectl get deployments
    ```
    
+1. Delete Nginx Container
+    ```sh 
+	  kubectl delete deployment sample-nginx
+    ```
+   
 1. Expose the deployment as service. This will create an ELB in front of those 2 containers and allow us to publicly access them:
    ```sh 
     kubectl expose deployment sample-nginx --port=80 --type=LoadBalancer
