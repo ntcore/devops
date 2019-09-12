@@ -21,8 +21,8 @@
    sudo mv ./kubectl /usr/local/bin/kubectl
    ```
 1. Create an IAM user/role  with Route53, EC2, IAM and S3 full access
-  ```sh
-  Setup IAM user
+   ```sh
+   Setup IAM user
 	In order to build clusters within AWS we'll create a dedicated IAM user for kops. This user requires 
 	API credentials in order to use kops. Create the user, and credentials, using the AWS console.
 
@@ -55,8 +55,7 @@
 	# Because "aws configure" doesn't export these vars for kops to use, we export them now
 	export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
 	export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
-	```
-
+   ```
 1. Attach IAM role to ubuntu server
 
     #### Note: If you create IAM user with programmatic access then provide Access keys. 
