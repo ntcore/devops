@@ -17,8 +17,8 @@
    ```sh
    curl -LO https://storage.googleapis.com/kubernetes-release/release/
 	$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-    chmod +x ./kubectl
-    sudo mv ./kubectl /usr/local/bin/kubectl
+   chmod +x ./kubectl
+   sudo mv ./kubectl /usr/local/bin/kubectl
    ```
 1. Create an IAM user/role  with Route53, EC2, IAM and S3 full access
   ```sh
@@ -55,7 +55,7 @@
 	# Because "aws configure" doesn't export these vars for kops to use, we export them now
 	export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
 	export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
-```
+	```
 
 1. Attach IAM role to ubuntu server
 
@@ -66,7 +66,7 @@
 1. Install kops on ubuntu instance:
    ```sh
     curl -LO https://github.com/kubernetes/kops/releases/download/
-	$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+	 $(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
     chmod +x kops-linux-amd64
     sudo mv kops-linux-amd64 /usr/local/bin/kops
     ```
@@ -98,84 +98,82 @@
     --dns-zone=alohapro.tk 
     --dns public
 
-  # Create a cluster in AWS
-  kops create cluster --name=kubernetes-cluster.example.com \
-  --state=s3://kops-state-1234 --zones=eu-west-1a \
-  --node-count=2
-  
-  # Create a cluster in AWS that has HA masters.  This cluster
-  # will be setup with an internal networking in a private VPC.
-  # A bastion instance will be setup to provide instance access.
-  
-  export NODE_SIZE=${NODE_SIZE:-m4.large}
-  export MASTER_SIZE=${MASTER_SIZE:-m4.large}
-  export ZONES=${ZONES:-"us-east-1d,us-east-1b,us-east-1c"}
-  export KOPS_STATE_STORE="s3://my-state-store"
-  kops create cluster k8s-clusters.example.com \
-  --node-count 3 \
-  --zones $ZONES \
-  --node-size $NODE_SIZE \
-  --master-size $MASTER_SIZE \
-  --master-zones $ZONES \
-  --networking weave \
-  --topology private \
-  --bastion="true" \
-  --yes
-  
-  # Create cluster in GCE.
-  # This is an alpha feature.
-  export KOPS_STATE_STORE="gs://mybucket-kops"
-  export ZONES=${MASTER_ZONES:-"us-east1-b,us-east1-c,us-east1-d"}
-  export KOPS_FEATURE_FLAGS=AlphaAllowGCE
-  
-  kops create cluster kubernetes-k8s-gce.example.com
-  --zones $ZONES \
-  --master-zones $ZONES \
-  --node-count 3
-  --project my-gce-project \
-  --image "ubuntu-os-cloud/ubuntu-1604-xenial-v20170202" \
-  --yes
-  # Create manifest for a cluster in AWS
-  kops create cluster --name=kubernetes-cluster.example.com \
-  --state=s3://kops-state-1234 --zones=eu-west-1a \
-  --node-count=2 --dry-run -oyaml
+	  # Create a cluster in AWS
+	  
+	  kops create cluster --name=kubernetes-cluster.example.com \
+	  --state=s3://kops-state-1234 --zones=eu-west-1a \
+	  --node-count=2
+	  
+	  # Create a cluster in AWS that has HA masters.  This cluster
+	  # will be setup with an internal networking in a private VPC.
+	  # A bastion instance will be setup to provide instance access.
+	  
+	  export NODE_SIZE=${NODE_SIZE:-m4.large}
+	  export MASTER_SIZE=${MASTER_SIZE:-m4.large}
+	  export ZONES=${ZONES:-"us-east-1d,us-east-1b,us-east-1c"}
+	  export KOPS_STATE_STORE="s3://my-state-store"
+	  kops create cluster k8s-clusters.example.com \
+	  --node-count 3 \
+	  --zones $ZONES \
+	  --node-size $NODE_SIZE \
+	  --master-size $MASTER_SIZE \
+	  --master-zones $ZONES \
+	  --networking weave \
+	  --topology private \
+	  --bastion="true" \
+	  --yes
+	  
+	  # Create cluster in GCE.
+	  # This is an alpha feature.
+	  export KOPS_STATE_STORE="gs://mybucket-kops"
+	  export ZONES=${MASTER_ZONES:-"us-east1-b,us-east1-c,us-east1-d"}
+	  export KOPS_FEATURE_FLAGS=AlphaAllowGCE
+	  
+	  kops create cluster kubernetes-k8s-gce.example.com
+	  --zones $ZONES \
+	  --master-zones $ZONES \
+	  --node-count 3
+	  --project my-gce-project \
+	  --image "ubuntu-os-cloud/ubuntu-1604-xenial-v20170202" \
+	  --yes
+	  # Create manifest for a cluster in AWS
+	  kops create cluster --name=kubernetes-cluster.example.com \
+	  --state=s3://kops-state-1234 --zones=eu-west-1a \
+	  --node-count=2 --dry-run -oyaml
 
-MICRO
+	MICRO
 
- kops create cluster \
-       --state "s3://state.chat.poeticoding.com" \
-       --zones "us-east-1d,us-east-1f"  \
-       --master-count 3 \
-       --master-size=t2.micro \
-       --node-count 2 \
-       --node-size=t2.micro \
-       --name chat.poeticoding.com \
-       --yes \
-	   --cloud=aws
-
-
-export KOPS_STATE_STORE="s3://clusters.k8s.alohapro.tk"
-export KOPS_CLUSTER_NAME=dev.k8s.alohapro.tk
-
- kops create cluster \
-	   --state "s3://clusters.k8s.alohapro.tk"  \
-	   --zones "eu-central-1a"  \
-       --master-count 1 \
-       --master-size=t2.micro \
-       --node-count 2 \
-       --node-size=t2.micro \
-       --name=$KOPS_CLUSTER_NAME  \
-	   --cloud=aws \
-	   --dns-zone=alohapro.tk  \
-	   --dns public
-       
+	 kops create cluster \
+		   --state "s3://state.chat.poeticoding.com" \
+		   --zones "us-east-1d,us-east-1f"  \
+		   --master-count 3 \
+		   --master-size=t2.micro \
+		   --node-count 2 \
+		   --node-size=t2.micro \
+		   --name chat.poeticoding.com \
+		   --yes \
+		   --cloud=aws
 
 
+	export KOPS_STATE_STORE="s3://clusters.k8s.alohapro.tk"
+	export KOPS_CLUSTER_NAME=dev.k8s.alohapro.tk
 
-```
-else
+	 kops create cluster \
+		   --state "s3://clusters.k8s.alohapro.tk"  \
+		   --zones "eu-central-1a"  \
+		   --master-count 1 \
+		   --master-size=t2.micro \
+		   --node-count 2 \
+		   --node-size=t2.micro \
+		   --name=$KOPS_CLUSTER_NAME  \
+		   --cloud=aws \
+		   --dns-zone=alohapro.tk  \
+		   --dns public
+		   
+	```
+	else
 
-https://www.poeticoding.com/create-a-high-availability-kubernetes-cluster-on-aws-with-kops/
+	https://www.poeticoding.com/create-a-high-availability-kubernetes-cluster-on-aws-with-kops/
 
     
 1. Create kubernetes cluser
