@@ -171,7 +171,9 @@
 		   
 	```
 	else
-
+    
+	kops create cluster --help
+	
 	https://www.poeticoding.com/create-a-high-availability-kubernetes-cluster-on-aws-with-kops/
 
     
