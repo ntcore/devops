@@ -15,8 +15,7 @@
 	
 1. Install kubectl
    ```sh
-   curl -LO https://storage.googleapis.com/kubernetes-release/release/
-	$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+   curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
    chmod +x ./kubectl
    sudo mv ./kubectl /usr/local/bin/kubectl
    ```
@@ -64,8 +63,7 @@
     ```
 1. Install kops on ubuntu instance:
    ```sh
-    curl -LO https://github.com/kubernetes/kops/releases/download/
-	 $(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+    curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
     chmod +x kops-linux-amd64
     sudo mv kops-linux-amd64 /usr/local/bin/kops
     ```
@@ -159,7 +157,7 @@
 
 	 kops create cluster \
 		   --state "s3://clusters.k8s.alohapro.tk"  \
-		   --zones "eu-central-1a"  \
+		   --zones "us-east-1"  \
 		   --master-count 1 \
 		   --master-size=t2.micro \
 		   --node-count 2 \
@@ -169,6 +167,9 @@
 		   --dns-zone=alohapro.tk  \
 		   --dns public
 		   
+--state "s3://clusters.k8s.alohapro.tk"
+	 kops create cluster  --zones "us-east-1" --master-count 1 --master-size=t2.micro --node-count=2 --node-size=t2.micro  --cloud=aws --dns-zone=alohapro.tk --dns public
+
 	```
 	else
     
@@ -176,7 +177,14 @@
 	
 	https://www.poeticoding.com/create-a-high-availability-kubernetes-cluster-on-aws-with-kops/
 
-    
+    kops edit cluster dev.k8s.alohapro.tk --state "s3://clusters.k8s.alohapro.tk"
+
+us-east-1a
+
+kops create secret --name useast1.k8s.alohapro.tk sshpublickey admin -i ~/.ssh/id_rsa.pub
+
+ useast1.k8s.alohapro.tk
+
 1. Create kubernetes cluser
     ```sh 
       kops update cluster useast1.k8s.alohapro.tk  --yes
@@ -225,3 +233,4 @@ https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 
 
 
+####HELM
